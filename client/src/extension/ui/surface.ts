@@ -2,7 +2,7 @@
 // uses a mineral blue signal, keeps detail one click away, and avoids layout-heavy motion.
 
 import { WATER_FACTORS } from "../../domain/calculation/factors";
-import { formatWaterMl } from "../../domain/calculation/totals";
+import { formatWaterLiters } from "../../domain/calculation/totals";
 import type { WaterEstimate } from "../../domain/calculation/types";
 import { WATER_COUNTER_STYLES } from "./styles";
 
@@ -42,7 +42,7 @@ function createMessageBadge(estimate: WaterEstimate): HTMLElement {
 
   const value = document.createElement("span");
   value.className = "value";
-  value.textContent = estimate.waterMl === null ? "Unavailable" : formatWaterMl(estimate.waterMl);
+  value.textContent = estimate.waterMl === null ? "Unavailable" : formatWaterLiters(estimate.waterMl);
 
   const label = document.createElement("span");
   label.className = "label";
@@ -74,10 +74,17 @@ function createMessageBadge(estimate: WaterEstimate): HTMLElement {
   return wrapper;
 }
 
-function createSummary(): { host: HTMLElement; value: HTMLElement; meta: HTMLElement } {
+function createSummary(): { host: HTMLElement; value: HTMLElement; meta: HTMLElement; count: HTMLElement } {
   const host = document.createElement("div");
   host.className = "summary-host";
   host.id = "water-counter-summary-host";
+  host.style.position = "fixed";
+  host.style.top = "58px";
+  host.style.right = "18px";
+  host.style.zIndex = "2147483646";
+  host.style.display = "block";
+  host.dataset.waterCounterTotal = "0 L";
+  host.dataset.waterCounterCount = "0";
 
   const root = host.attachShadow({ mode: "closed" });
   addStyle(root);
@@ -86,26 +93,52 @@ function createSummary(): { host: HTMLElement; value: HTMLElement; meta: HTMLEle
   summary.className = "summary";
   summary.setAttribute("aria-label", "Water Counter chat total");
 
-  const line = document.createElement("div");
-  line.className = "summary-line";
+  const toggle = document.createElement("button");
+  toggle.className = "summary-toggle";
+  toggle.type = "button";
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.setAttribute("aria-label", "Open Water Counter chat total details");
+  toggle.title = "Open Water Counter chat total details";
 
   const label = document.createElement("span");
   label.className = "summary-label";
-  label.textContent = "Chat total";
+  label.textContent = "Water total";
 
   const value = document.createElement("strong");
   value.className = "summary-value";
-  value.textContent = "0 mL";
+  value.textContent = "0 L";
 
-  line.append(label, value);
+  const caret = document.createElement("span");
+  caret.className = "summary-caret";
+  caret.textContent = "＋";
+  caret.setAttribute("aria-hidden", "true");
+  toggle.append(label, value, caret);
+
+  const details = document.createElement("div");
+  details.className = "summary-details";
+  details.hidden = true;
+
+  const detailLabel = document.createElement("span");
+  detailLabel.className = "summary-detail-label";
+  detailLabel.textContent = "Current conversation";
 
   const meta = document.createElement("span");
   meta.className = "summary-meta";
   meta.textContent = "No counted responses yet";
 
-  summary.append(line, meta);
+  const count = document.createElement("span");
+  count.className = "summary-count";
+  count.textContent = "0 counted responses";
+
+  details.append(detailLabel, meta, count);
+  summary.append(toggle, details);
+  toggle.addEventListener("click", () => {
+    details.hidden = !details.hidden;
+    toggle.setAttribute("aria-expanded", String(!details.hidden));
+    caret.textContent = details.hidden ? "＋" : "−";
+  });
   root.append(summary);
-  return { host, value, meta };
+  return { host, value, meta, count };
 }
 
 export function mountWaterCounterSurface(): WaterCounterSurface {
@@ -124,8 +157,12 @@ export function mountWaterCounterSurface(): WaterCounterSurface {
       messageElement.append(badge);
     },
     updateTotal: (totalMl, messageCount) => {
-      summary.value.textContent = formatWaterMl(totalMl);
+      const formattedTotal = formatWaterLiters(totalMl);
+      summary.value.textContent = formattedTotal;
       summary.meta.textContent = messageCount === 0 ? "No counted responses yet" : `${messageCount} counted response${messageCount === 1 ? "" : "s"}`;
+      summary.count.textContent = `${messageCount} counted response${messageCount === 1 ? "" : "s"}`;
+      summary.host.dataset.waterCounterTotal = formattedTotal;
+      summary.host.dataset.waterCounterCount = String(messageCount);
     },
   };
 }
