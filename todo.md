@@ -23,3 +23,8 @@
 - [x] Generate and wire the Water Counter extension icon and favicon.
 - [x] Test the revised UI and totals in Chromium across supported providers.
 - [x] Package and publish the revised release.
+- [x] Reset the injected total when the conversation route changes.
+- [x] Show zero for a new empty chat and load the selected chat total after refresh.
+- [x] Preserve the user’s README install section and update only the latest release ZIP link.
+- [x] Test new-chat, existing-chat, refresh, and route-change total behavior.
+- [x] Package and publish the chat-isolation correction.
