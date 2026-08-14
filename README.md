@@ -6,11 +6,19 @@ It shows an estimated water value for each completed response. It also shows the
 
 Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside the chat page. It does not add a separate dashboard.
 
+## Installation
+
+**Chrome / Edge / Chromium**
+
+1. Download [`water-counter-v0.1.3.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.3/water-counter-v0.1.3.zip)
+2. Go to `chrome://extensions` and enable **Developer mode**
+3. Drag and drop the ZIP onto the page
+
 ## Current release
 
-The current public release is **v0.1.2**.
+The current public release is **v0.1.3**.
 
-Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.2).
+Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.3).
 
 The release ZIP contains `manifest.json` at its root. It is ready for Chrome **Load unpacked** installation.
 
@@ -72,7 +80,7 @@ The extension uses the minimum permission needed for local storage and the three
 
 Chrome does not install a ZIP file automatically. Use the following steps:
 
-1. Download `water-counter-v0.1.2.zip` from the [v0.1.2 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.2).
+1. Download `water-counter-v0.1.3.zip` from the [v0.1.3 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.3).
 2. Extract the ZIP file to a permanent folder.
 3. Open `chrome://extensions` in Chrome.
 4. Turn on **Developer mode**.
