@@ -15,7 +15,9 @@ const manifest = {
   },
   action: {
     default_title: "Water Counter",
+    default_popup: "src/extension/popup/popup.html",
   },
+  options_page: "src/extension/options/options.html",
   content_scripts: [
     {
       matches: [
