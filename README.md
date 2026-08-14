@@ -10,15 +10,15 @@ Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside t
 
 **Chrome / Edge / Chromium**
 
-1. Download [`water-counter-v0.1.3.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.3/water-counter-v0.1.3.zip)
+1. Download [`water-counter-v0.1.4.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.4/water-counter-v0.1.4.zip)
 2. Go to `chrome://extensions` and enable **Developer mode**
 3. Drag and drop the ZIP onto the page
 
 ## Current release
 
-The current public release is **v0.1.3**.
+The current public release is **v0.1.4**.
 
-Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.3).
+Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.4).
 
 
 ## Features
@@ -79,7 +79,7 @@ The extension uses the minimum permission needed for local storage and the three
 
 Chrome does not install a ZIP file automatically. Use the following steps:
 
-1. Download `water-counter-v0.1.3.zip` from the [v0.1.3 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.3).
+1. Download `water-counter-v0.1.4.zip` from the [v0.1.4 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.4).
 2. Extract the ZIP file to a permanent folder.
 3. Open `chrome://extensions` in Chrome.
 4. Turn on **Developer mode**.
