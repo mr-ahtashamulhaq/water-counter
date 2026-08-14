@@ -8,13 +8,13 @@ The extension calculates values in the browser. It does not save chat text by de
 
 ## Project status
 
-The first public release is `v0.1.0`. It supports Chrome unpacked installation from the ZIP file in the GitHub release.
+The corrected public release is `v0.1.1`. It supports Chrome unpacked installation from the ZIP file in the GitHub release.
 
 The extension supports ChatGPT, Gemini, and Claude text chats. Provider page selectors can need updates when those sites change their HTML.
 
 ## Install in Chrome
 
-1. Download `water-counter-v0.1.0.zip` from the [Releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases).
+1. Download `water-counter-v0.1.1.zip` from the [Releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases).
 2. Extract the ZIP file to a folder on your computer.
 3. Open `chrome://extensions` in Chrome.
 4. Turn on **Developer mode**.
