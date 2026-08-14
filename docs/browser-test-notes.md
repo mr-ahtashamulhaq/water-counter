@@ -52,3 +52,11 @@ The reported stale-total issue came from the single-page app changing the URL wi
 The content script now watches `pushState`, `replaceState`, `popstate`, and `hashchange`. It also keeps a short route polling fallback. When the conversation identifier changes, it clears tracked message IDs, sets the surface to `0 L` and `0` responses, and loads the new conversation total.
 
 The Chromium route test counted four responses as `0.0013 L`, changed to a distinct empty chat route, and observed `0 L` with `0` responses. It then changed to the new-chat root and remained at `0 L` with `0` responses.
+
+## Root new-chat revision
+
+ChatGPT uses `/` for the new-chat home. The earlier route fix changed the visible state, but a record stored under `chatgpt:/` could still return after refresh.
+
+The content script now clears the root conversation record when the root page has no completed messages. It keeps normal saved totals for conversation URLs.
+
+The Chromium root test created three temporary responses with `0.00096 L`. After refresh, the empty root showed `0 L` and `0` responses.
