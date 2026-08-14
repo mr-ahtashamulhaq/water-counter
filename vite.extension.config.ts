@@ -8,9 +8,12 @@ import manifest from "./client/src/extension/manifest";
 // Water Counter extension build: only popup, options, content, and background entries.
 
 export default defineConfig({
-  plugins: [crx({ manifest }), react(), tailwindcss()],
+  plugins: [crx({ manifest }), react({ jsxRuntime: "automatic" }), tailwindcss()],
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
+  },
+  esbuild: {
+    jsxDev: false,
   },
   root: path.resolve(import.meta.dirname, "client/src/extension"),
   build: {
