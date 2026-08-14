@@ -10,14 +10,14 @@ const manifest = {
     "https://claude.ai/*",
   ],
   background: {
-    service_worker: "src/extension/background/service-worker.ts",
+    service_worker: "background/service-worker.ts",
     type: "module",
   },
   action: {
     default_title: "Water Counter",
-    default_popup: "src/extension/popup/popup.html",
+    default_popup: "popup/popup.html",
   },
-  options_page: "src/extension/options/options.html",
+  options_page: "options/options.html",
   content_scripts: [
     {
       matches: [
@@ -25,7 +25,7 @@ const manifest = {
         "https://gemini.google.com/*",
         "https://claude.ai/*",
       ],
-      js: ["src/extension/content/content-script.ts"],
+      js: ["content/content-script.ts"],
       run_at: "document_idle",
     },
   ],
