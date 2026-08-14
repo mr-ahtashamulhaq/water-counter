@@ -1,8 +1,9 @@
 # Current Tasks
 
-- [x] Inspect the active GitHub connector and authentication state.
-- [x] Verify repository listing and write permissions without changing user repositories.
-- [ ] Test public repository creation only after explicit confirmation.
-- [x] Test push capability with a temporary safe repository or a user-approved repository.
-- [x] Define the frequent commit workflow and enforce 1–3 word messages with no punctuation.
-- [x] Report the verified capabilities and any required user action.
+- [ ] Create the public `water-counter` GitHub repository.
+- [ ] Prepare the basic extension project structure.
+- [ ] Add the first project files with small commits.
+- [ ] Push the granular commit history to GitHub.
+- [ ] Write the one-line, two-line, three-line, five-line, ten-line, half-page, and one-page descriptions.
+- [ ] Review the descriptions for simple English.
+- [ ] Report the repository URL and commit summary.
