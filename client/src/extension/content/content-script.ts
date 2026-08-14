@@ -10,11 +10,20 @@ import { mountWaterCounterSurface } from "../ui/surface";
 const provider = activeProvider(window.location);
 
 if (provider !== "unknown") {
-  const conversationId = detectConversationId(window.location, provider);
+  let conversationId = detectConversationId(window.location, provider);
   const sentQueryIds = new Set<string>();
   const surface = mountWaterCounterSurface();
+  let scanPromise: Promise<void> | null = null;
+  let scanRequested = false;
 
-  const scan = () => {
+  const runScan = async (): Promise<void> => {
+    const nextConversationId = detectConversationId(window.location, provider);
+    if (nextConversationId !== conversationId) {
+      conversationId = nextConversationId;
+      sentQueryIds.clear();
+    }
+
+    const pendingWrites = [];
     for (const { query, element } of findCompletedQueryNodes(provider)) {
       if (sentQueryIds.has(query.id)) {
         continue;
@@ -23,27 +32,47 @@ if (provider !== "unknown") {
       sentQueryIds.add(query.id);
       const estimate = estimateQuery(query);
       surface.upsertMessage(element, estimate, query.id);
-      void chrome.runtime.sendMessage({
-        type: "water-counter.query-completed",
-        conversationId,
-        query,
-        estimate,
-      });
+      pendingWrites.push(
+        chrome.runtime.sendMessage({
+          type: "water-counter.query-completed",
+          conversationId,
+          query,
+          estimate,
+        }),
+      );
     }
 
-    void chrome.runtime.sendMessage(
-      {
-        type: "water-counter.get-chat-total",
-        conversationId,
-      },
-      (response: { totalMl?: number; messageCount?: number } | undefined) => {
-        if (response?.totalMl === undefined || response.messageCount === undefined) {
-          return;
-        }
+    await Promise.all(pendingWrites);
 
-        surface.updateTotal(response.totalMl, response.messageCount);
-      },
-    );
+    await new Promise<void>((resolve) => {
+      chrome.runtime.sendMessage(
+        {
+          type: "water-counter.get-chat-total",
+          conversationId,
+        },
+        (response: { totalMl?: number; messageCount?: number } | undefined) => {
+          if (response?.totalMl !== undefined && response.messageCount !== undefined) {
+            surface.updateTotal(response.totalMl, response.messageCount);
+          }
+          resolve();
+        },
+      );
+      });
+  };
+
+  const scan = () => {
+    if (scanPromise) {
+      scanRequested = true;
+      return;
+    }
+
+    scanPromise = runScan().finally(() => {
+      scanPromise = null;
+      if (scanRequested) {
+        scanRequested = false;
+        scan();
+      }
+    });
   };
 
   scan();
