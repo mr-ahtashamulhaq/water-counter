@@ -2,7 +2,7 @@
 
 ## Download the release
 
-Open the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases). Download the latest file named `water-counter-v0.1.0.zip`.
+Open the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases). Download the latest file named `water-counter-v0.1.1.zip`.
 
 ## Install the extension
 
