@@ -1,45 +1,144 @@
 # Water Counter
 
-Water Counter is a browser extension that shows the estimated water use of AI chats.
+Water Counter is a privacy-first Chrome extension for AI chats.
 
-The first version supports ChatGPT, Gemini, and Claude text chats. It shows an estimate for each completed AI response. It also shows the total for the current chat.
+It shows an estimated water value for each completed response. It also shows the total for the current chat.
 
-The extension calculates values in the browser. It does not save chat text by default. It labels each value as an estimate and shows the source and limits of the calculation.
+Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside the chat page. It does not add a separate dashboard.
 
-## Project status
+## Current release
 
-The corrected public release is `v0.1.2`. It supports Chrome unpacked installation from the ZIP file in the GitHub release.
+The current public release is **v0.1.2**.
 
-The extension supports ChatGPT, Gemini, and Claude text chats. Provider page selectors can need updates when those sites change their HTML.
+Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.2).
+
+The release ZIP contains `manifest.json` at its root. It is ready for Chrome **Load unpacked** installation.
+
+## Features
+
+| Feature | Description |
+| --- | --- |
+| Response estimates | Shows one estimate beside each completed AI response. |
+| Chat total | Shows a small total button in the top-right corner. Details open when you select the button. |
+| Liter display | Shows visible water values in liters. |
+| Provider support | Supports ChatGPT, Gemini, and Claude text chats. |
+| Local calculation | Calculates values in the browser. |
+| Local storage | Stores estimate records in Chrome local storage. It does not save chat text by default. |
+| Low-motion UI | Uses small state changes. It does not update the estimate while a response is streaming. |
+| Extension branding | Includes a Water Counter icon and a preview favicon. |
+
+## Calculation model
+
+Water Counter uses one fixed factor for each supported provider.
+
+The factor applies when the extension finds a completed response. The current model does not scale the value by words, characters, or tokens.
+
+| Provider | Factor | Display value for one response | Factor type |
+| --- | ---: | ---: | --- |
+| ChatGPT | 0.32 mL | 0.00032 L | Public average query estimate [1] |
+| Gemini | 0.26 mL | 0.00026 L | Google production-fleet median text-prompt estimate [2] |
+| Claude | 0.32 mL | 0.00032 L | ChatGPT proxy for comparison |
+
+The Claude value is not a Claude measurement. Anthropic does not publish a Claude-specific factor in the sources reviewed for this release.
+
+The calculation is:
+
+```text
+response water = provider factor
+chat total = sum of counted response factors
+```
+
+For example, four ChatGPT responses use this estimate:
+
+```text
+4 × 0.32 mL = 1.28 mL = 0.00128 L
+```
+
+The extension rounds the displayed value for compact output. These values are estimates. They are not direct measurements from a data center.
+
+There is no reliable word-per-litre value in this release. The public factors are averages or medians. They are not token-scaled measurements.
+
+## Privacy
+
+Water Counter calculates estimates in the browser.
+
+The extension stores estimate records in `chrome.storage.local`. It stores the provider, conversation identifier, estimate, factor version, and time.
+
+The extension does not save chat text by default. It does not need a server for its main calculation.
+
+The extension uses the minimum permission needed for local storage and the three supported chat sites.
 
 ## Install in Chrome
 
-1. Download `water-counter-v0.1.2.zip` from the [Releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases).
-2. Extract the ZIP file to a folder on your computer.
+Chrome does not install a ZIP file automatically. Use the following steps:
+
+1. Download `water-counter-v0.1.2.zip` from the [v0.1.2 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.2).
+2. Extract the ZIP file to a permanent folder.
 3. Open `chrome://extensions` in Chrome.
 4. Turn on **Developer mode**.
 5. Select **Load unpacked**.
 6. Select the extracted folder that contains `manifest.json`.
-7. Open ChatGPT, Gemini, or Claude in a new tab.
+7. Open a supported chat site in a new tab.
 
-Chrome keeps the extension active until you remove it. Select **Reload** on the extension card after you download a newer release.
-
-> Privacy note: Water Counter calculates values in the browser. It does not save chat text by default. Chrome shows a warning for unpacked extensions because this install method is for local development and direct distribution.
-
-## Planned structure
-
-| Path | Purpose |
+| Site | URL |
 | --- | --- |
-| `client/` | React and Vite frontend workspace. |
-| `client/src/extension/` | Browser extension entry points. |
-| `client/src/domain/` | Calculation and provider rules. |
-| `docs/` | Product, design, and technical documents. |
-| `tests/` | Unit, fixture, and browser tests. |
+| ChatGPT | <https://chatgpt.com/> |
+| Gemini | <https://gemini.google.com/> |
+| Claude | <https://claude.ai/> |
 
-## Main rules
+Pin Water Counter from Chrome's extensions menu if you want quick access to the popup.
 
-The product uses sourced factors. It does not claim exact physical water use. It does not send chat data to a remote service by default. It does not add a value when no defensible factor exists.
+## Update the extension
+
+1. Download the newer release ZIP.
+2. Extract it to a new folder.
+3. Open `chrome://extensions`.
+4. Select **Remove** for the old Water Counter entry.
+5. Select **Load unpacked**.
+6. Select the new folder that contains `manifest.json`.
+
+The unpacked install method does not provide automatic updates. Users must repeat these steps for each new release.
 
 ## Development
 
-Use the project package manager to install dependencies. Run `pnpm check`, `pnpm test`, and `pnpm build:extension` before each milestone commit.
+Install the project dependencies with the project package manager.
+
+Run the main checks:
+
+```bash
+pnpm check
+pnpm test
+pnpm build:extension
+pnpm verify:extension
+```
+
+The unit test suite covers calculation status, provider factors, totals, and liters formatting.
+
+The Chromium smoke test covers provider-shaped response fixtures, multiple historical responses, badge injection, top-right summary state, and browser console output.
+
+## Project structure
+
+| Path | Purpose |
+| --- | --- |
+| `client/src/extension/` | Manifest V3 entry points, content script, service worker, popup, options, and injected UI. |
+| `client/src/domain/calculation/` | Factors, estimate logic, totals, and unit formatting. |
+| `client/src/domain/providers/` | Provider detection, DOM profiles, message pairing, and conversation identity. |
+| `client/src/domain/storage/` | Chrome local-storage records and serialized mutations. |
+| `docs/` | Product, design, performance, install, and browser test notes. |
+| `scripts/` | Build verification, asset preparation, and Chromium test scripts. |
+
+## Known limits
+
+Water Counter depends on page selectors. ChatGPT, Gemini, and Claude can change their HTML. A selector change can stop new estimates until a later release updates the profile.
+
+The current factors are fixed provider averages or medians. They do not measure prompt length, response length, model selection, or token count.
+
+The Claude value uses the ChatGPT factor as a comparison proxy. It is not a Claude-specific measurement.
+
+Browser fixtures were tested in Chromium. Authenticated live conversations still need testing in a user's Chrome profile.
+
+## References
+
+[1]: <https://blog.samaltman.com/the-gentle-singularity> "The Gentle Singularity, Sam Altman"
+
+[2]: <https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference> "Measuring the environmental impact of AI inference, Google Cloud"
