@@ -1,11 +1,33 @@
-const supportedHosts = new Set([
-  "chatgpt.com",
-  "gemini.google.com",
-  "claude.ai",
-]);
+import { estimateQuery } from "../../domain/calculation/estimate";
+import {
+  activeProvider,
+  detectConversationId,
+  findCompletedQueries,
+} from "../../domain/providers/adapters";
+import { createObservationScheduler } from "./observer";
 
-const isSupportedHost = supportedHosts.has(window.location.hostname);
+const provider = activeProvider(window.location);
 
-if (isSupportedHost) {
-  void chrome.runtime.sendMessage({ type: "water-counter.ping" });
+if (provider !== "unknown") {
+  const conversationId = detectConversationId(window.location, provider);
+  const sentQueryIds = new Set<string>();
+
+  const scan = () => {
+    for (const query of findCompletedQueries(provider)) {
+      if (sentQueryIds.has(query.id)) {
+        continue;
+      }
+
+      sentQueryIds.add(query.id);
+      void chrome.runtime.sendMessage({
+        type: "water-counter.query-completed",
+        conversationId,
+        query,
+        estimate: estimateQuery(query),
+      });
+    }
+  };
+
+  scan();
+  createObservationScheduler(scan).start();
 }
