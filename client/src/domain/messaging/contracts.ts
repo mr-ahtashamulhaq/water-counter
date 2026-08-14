@@ -6,6 +6,7 @@ export type RuntimeMessage =
     }
   | {
       type: "water-counter.query-completed";
+      conversationId: string;
       query: CompletedQuery;
       estimate: WaterEstimate;
     }
