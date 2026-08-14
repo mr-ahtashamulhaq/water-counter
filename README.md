@@ -11,7 +11,7 @@ Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside t
 
 **Chrome / Edge / Chromium**
 
-1. Download [`claude-counter-0.4.2.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.2/water-counter-v0.1.2.zip)
+1. Download [`water-counter-v0.1.2.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.2/water-counter-v0.1.2.zip)
 2. Go to `chrome://extensions` and enable **Developer mode**
 3. Drag and drop the zip onto the page
 
