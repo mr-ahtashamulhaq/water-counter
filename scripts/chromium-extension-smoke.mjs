@@ -69,6 +69,14 @@ if (!target.url.startsWith("chrome-extension://")) {
 }
 await send(socket, "Page.bringToFront");
 
+if (process.argv.includes("--route-test")) {
+  await send(socket, "Runtime.evaluate", {
+    expression: "history.pushState({}, '', '/c/fixture-source')",
+    returnByValue: true,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 700));
+}
+
 if (process.argv.includes("--pause") || process.argv.includes("--clear")) {
   const selector = process.argv.includes("--clear") ? "button.danger" : "[role=\"switch\"]";
   await send(socket, "Runtime.evaluate", {
@@ -106,6 +114,74 @@ if (process.argv.includes("--fixture")) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
+let routeTest = null;
+if (process.argv.includes("--route-test")) {
+  const before = await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      const host = document.querySelector('#water-counter-summary-host');
+      return { total: host?.dataset.waterCounterTotal ?? null, count: host?.dataset.waterCounterCount ?? null };
+    })()`,
+    returnByValue: true,
+  });
+  await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      document.querySelectorAll('[data-message-author-role], [data-testid="conversation-turn-user"], [data-testid="conversation-turn-assistant"]').forEach((node) => node.remove());
+      history.pushState({}, '', '/c/route-test');
+      return true;
+    })()`,
+    returnByValue: true,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 1200));
+  const route = await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      const host = document.querySelector('#water-counter-summary-host');
+      return { total: host?.dataset.waterCounterTotal ?? null, count: host?.dataset.waterCounterCount ?? null };
+    })()`,
+    returnByValue: true,
+  });
+  await send(socket, "Runtime.evaluate", {
+    expression: "history.pushState({}, '', '/')",
+    returnByValue: true,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 1200));
+  const after = await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      const host = document.querySelector('#water-counter-summary-host');
+      return { total: host?.dataset.waterCounterTotal ?? null, count: host?.dataset.waterCounterCount ?? null };
+    })()`,
+    returnByValue: true,
+  });
+  routeTest = {
+    before: before.result?.result?.value ?? null,
+    route: route.result?.result?.value ?? null,
+    after: after.result?.result?.value ?? null,
+  };
+}
+
+let reloadTest = null;
+if (process.argv.includes("--reload-test")) {
+  const before = await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      const host = document.querySelector('#water-counter-summary-host');
+      return { total: host?.dataset.waterCounterTotal ?? null, count: host?.dataset.waterCounterCount ?? null };
+    })()`,
+    returnByValue: true,
+  });
+  await send(socket, "Page.reload", { ignoreCache: true });
+  await new Promise((resolve) => setTimeout(resolve, 2500));
+  const after = await send(socket, "Runtime.evaluate", {
+    expression: `(() => {
+      const host = document.querySelector('#water-counter-summary-host');
+      return { total: host?.dataset.waterCounterTotal ?? null, count: host?.dataset.waterCounterCount ?? null };
+    })()`,
+    returnByValue: true,
+  });
+  reloadTest = {
+    before: before.result?.result?.value ?? null,
+    after: after.result?.result?.value ?? null,
+  };
+}
+
 if (process.env.SCREENSHOT_PATH) {
   const screenshot = await send(socket, "Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   writeFileSync(process.env.SCREENSHOT_PATH, Buffer.from(screenshot.result.data, "base64"));
@@ -128,6 +204,10 @@ const evaluation = await send(socket, "Runtime.evaluate", {
   returnByValue: true,
 });
 
-console.log(JSON.stringify(evaluation.result?.result?.value ?? evaluation, null, 2));
+console.log(JSON.stringify({
+  ...(evaluation.result?.result?.value ?? evaluation),
+  routeTest,
+  reloadTest,
+}, null, 2));
 console.log(JSON.stringify({ consoleEvents }, null, 2));
 socket.close();
