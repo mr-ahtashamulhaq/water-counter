@@ -2,7 +2,7 @@
 
 ## Download the release
 
-Open the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases). Download the latest file named `water-counter-v0.1.1.zip`.
+Open the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases). Download the latest file named `water-counter-v0.1.2.zip`.
 
 ## Install the extension
 
@@ -25,7 +25,7 @@ Open one of these sites in a new tab:
 | Gemini | `https://gemini.google.com/` |
 | Claude | `https://claude.ai/` |
 
-Water Counter shows an estimate beside each completed response. It also shows the total for the current chat. Claude can show **Unavailable** when no current provider factor exists.
+Water Counter shows an estimate beside each completed response. It also shows the total for the current chat in liters. Claude uses the ChatGPT public average as a clearly labeled comparison proxy because Anthropic does not publish a Claude-specific factor.
 
 ## Update the extension
 
