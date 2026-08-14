@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(
     if (message.type === "water-counter.query-completed") {
       void saveQuery({
         id: message.query.id,
-        conversationId: "current-page",
+        conversationId: message.conversationId,
         provider: message.query.provider,
         createdAt: Date.now(),
         modelLabel: message.query.modelLabel,
