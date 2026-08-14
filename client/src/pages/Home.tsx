@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 import { Droplets, Gauge, ShieldCheck } from "lucide-react";
-import { formatWaterMl } from "../domain/calculation/totals";
+import { formatWaterLiters } from "../domain/calculation/totals";
 import "./home.css";
 
 type Provider = "ChatGPT" | "Gemini" | "Claude";
@@ -11,18 +11,18 @@ type Provider = "ChatGPT" | "Gemini" | "Claude";
 const providerDetails: Record<Provider, { model: string; totalMl: number; factor: string }> = {
   ChatGPT: {
     model: "Current conversation",
-    totalMl: 1.28,
+    totalMl: 0.96,
     factor: "Provider average estimate",
   },
   Gemini: {
     model: "Gemini Apps text chat",
-    totalMl: 1.04,
+    totalMl: 0.52,
     factor: "Median text prompt estimate",
   },
   Claude: {
     model: "Current conversation",
-    totalMl: 0,
-    factor: "Estimate unavailable",
+    totalMl: 0.32,
+    factor: "ChatGPT proxy estimate",
   },
 };
 
@@ -31,19 +31,19 @@ const messages: Record<Provider, Array<{ user: string; answer: string; estimate:
     {
       user: "Explain why long prompts can use more compute.",
       answer: "Long prompts give the model more text to process. Longer responses also add more inference work. The exact water value depends on the provider and the infrastructure behind the model.",
-      estimate: "0.32 mL",
+      estimate: "0.00032 L",
       note: "Provider average · not token-scaled",
     },
     {
       user: "How can I keep an AI chat focused?",
       answer: "State the task, add the needed context, and ask for the output format. A focused request can reduce extra turns and make the result easier to review.",
-      estimate: "0.32 mL",
+      estimate: "0.00032 L",
       note: "Provider average · source details available",
     },
     {
       user: "Summarize the main idea in one sentence.",
       answer: "A small estimate can make a large system easier to understand without interrupting the work.",
-      estimate: "0.32 mL",
+      estimate: "0.00032 L",
       note: "Provider average · inference only",
     },
   ],
@@ -51,22 +51,22 @@ const messages: Record<Provider, Array<{ user: string; answer: string; estimate:
     {
       user: "What does a data center use water for?",
       answer: "Some data centers use water in cooling systems. The amount depends on the equipment, climate, cooling design, and workload.",
-      estimate: "0.26 mL",
+      estimate: "0.00026 L",
       note: "Median text prompt · not token-scaled",
     },
     {
       user: "What is a good way to compare estimates?",
       answer: "Compare the source, measurement boundary, date, and uncertainty before comparing the number.",
-      estimate: "0.26 mL",
+      estimate: "0.00026 L",
       note: "Provider average · source details available",
     },
   ],
   Claude: [
     {
       user: "Can you explain this in plain English?",
-      answer: "Water Counter keeps the message visible but does not create a number when a current provider factor is not available.",
-      estimate: "Unavailable",
-      note: "No current provider factor found",
+      answer: "Water Counter uses the same public ChatGPT average as a comparison proxy because Claude does not publish a provider-specific factor.",
+      estimate: "0.00032 L",
+      note: "ChatGPT proxy · not a Claude measurement",
     },
   ],
 };
@@ -136,7 +136,7 @@ export default function Home() {
               </div>
               <div className="chat-total" aria-live="polite">
                 <span className="chat-total-label">Chat total</span>
-                <strong className="chat-total-value">{detail.totalMl ? formatWaterMl(detail.totalMl) : "Unavailable"}</strong>
+                <strong className="chat-total-value">{detail.totalMl ? formatWaterLiters(detail.totalMl) : "Unavailable"}</strong>
                 <span className="chat-total-meta">{detail.totalMl ? "operational · local" : "no current factor"}</span>
               </div>
             </header>
@@ -145,7 +145,7 @@ export default function Home() {
               <span className="waterline-track" />
               <span className="waterline-fill" style={{ width: `${waterlineWidth}%` }} />
               <span className="waterline-tick" style={{ left: `${waterlineWidth}%` }} />
-              <span className="waterline-label">0 mL <span>waterline</span> {detail.totalMl ? formatWaterMl(detail.totalMl) : "—"}</span>
+                <span className="waterline-label">0 L <span>waterline</span> {detail.totalMl ? formatWaterLiters(detail.totalMl) : "—"}</span>
             </div>
 
             <div className="message-list">

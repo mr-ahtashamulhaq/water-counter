@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { countedMessages, formatWaterMl, totalMilliliters } from "../../domain/calculation/totals";
+import { countedMessages, formatWaterLiters, totalMilliliters } from "../../domain/calculation/totals";
 import { clearAll, readStore, setPaused } from "../../domain/storage/store";
 import "./popup.css";
 
@@ -72,7 +72,7 @@ export default function PopupView() {
         <p id="total-title" className="eyebrow">
           Latest chat total
         </p>
-        <p className="total">{formatWaterMl(state.totalMl)}</p>
+        <p className="total">{formatWaterLiters(state.totalMl)}</p>
         <p className="total-note">
           An estimate for operational water consumption. It is not a direct data-center measurement.
         </p>
