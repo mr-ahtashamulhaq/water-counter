@@ -13,7 +13,7 @@
 - [x] Verify the release ZIP contents and extension build before publishing.
 - [x] Create a versioned GitHub release with the ZIP attached.
 - [x] Document Chrome unpacked-install steps and release download links.
-- [ ] Reproduce the extension failure in a real browser and capture console errors.
-- [ ] Test ChatGPT, Gemini, Claude, popup, service worker, and local storage flows.
-- [ ] Fix reproducible browser errors and add regression coverage.
-- [ ] Build and publish a corrected release package.
+- [x] Reproduce the extension failure in a real browser and capture console errors.
+- [x] Test ChatGPT, Gemini, Claude, popup, service worker, and local storage flows.
+- [x] Fix reproducible browser errors and add regression coverage.
+- [x] Build and publish a corrected release package.
