@@ -1,7 +1,7 @@
 import { estimateQuery } from "../../domain/calculation/estimate";
 import { countedMessages, totalMilliliters } from "../../domain/calculation/totals";
 import type { RuntimeMessage } from "../../domain/messaging/contracts";
-import { clearAll, readStore, saveQuery, setPaused } from "../../domain/storage/store";
+import { clearAll, clearConversation, readStore, saveQuery, setPaused } from "../../domain/storage/store";
 
 chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, sender, sendResponse) => {
@@ -37,6 +37,11 @@ chrome.runtime.onMessage.addListener(
           messageCount: countedMessages(queries),
         });
       });
+      return true;
+    }
+
+    if (message.type === "water-counter.clear-conversation") {
+      void clearConversation(message.conversationId).then(() => sendResponse({ type: "water-counter.conversation-cleared" }));
       return true;
     }
 
