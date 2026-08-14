@@ -44,3 +44,11 @@ The total control is now a compact top-right button. Its details are hidden unti
 The final Chromium screenshot shows the button at the top-right below ChatGPT’s header actions. It does not create a bottom strip or open a details panel by default. The visible example is `0.0013 L` for four ChatGPT responses.
 
 The web preview also renders the revised liters values and the Claude comparison copy. The generated icon was cleaned to a transparent Water Counter mark and rasterized into the 16, 32, 48, and 128 pixel extension assets plus the preview favicon.
+
+## Chat isolation revision
+
+The reported stale-total issue came from the single-page app changing the URL without creating a new content-script instance. The old surface stayed visible until a later scan.
+
+The content script now watches `pushState`, `replaceState`, `popstate`, and `hashchange`. It also keeps a short route polling fallback. When the conversation identifier changes, it clears tracked message IDs, sets the surface to `0 L` and `0` responses, and loads the new conversation total.
+
+The Chromium route test counted four responses as `0.0013 L`, changed to a distinct empty chat route, and observed `0 L` with `0` responses. It then changed to the new-chat root and remained at `0 L` with `0` responses.
