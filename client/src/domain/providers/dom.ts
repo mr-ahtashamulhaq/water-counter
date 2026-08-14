@@ -50,13 +50,34 @@ export function findPreviousUser(
   assistant: Element,
   userSelectors: readonly string[],
 ): Element | null {
-  let current = assistant.previousElementSibling;
-  while (current) {
-    const candidate = current;
-    if (userSelectors.some((selector) => candidate.matches(selector) || candidate.querySelector(selector))) {
-      return current;
+  const isUser = (candidate: Element): boolean => {
+    return userSelectors.some((selector) => candidate.matches(selector) || candidate.querySelector(selector));
+  };
+
+  let current: Element | null = assistant;
+  for (let depth = 0; current && depth < 6; depth += 1) {
+    const parent: Element | null = current.parentElement;
+    if (!parent) {
+      break;
     }
-    current = current.previousElementSibling;
+
+    const siblings = Array.from(parent.children) as Element[];
+    const index = siblings.indexOf(current);
+    for (let siblingIndex = index - 1; siblingIndex >= 0; siblingIndex -= 1) {
+      const sibling = siblings[siblingIndex];
+      if (isUser(sibling)) {
+        return sibling;
+      }
+
+      const nested = (Array.from(sibling.querySelectorAll("*")) as Element[])
+        .reverse()
+        .find((candidate) => isUser(candidate));
+      if (nested) {
+        return nested;
+      }
+    }
+
+    current = parent;
   }
 
   return null;

@@ -30,13 +30,14 @@ export const PROVIDER_PROFILES: Record<Exclude<ProviderProfile["provider"], "unk
   claude: {
     provider: "claude",
     assistantSelectors: [
+      '[data-testid="assistant-message"]',
       '[data-testid="conversation-turn-assistant"]',
       ".font-claude-message",
       '[data-is-streaming="false"]',
     ],
     userSelectors: [
-      '[data-testid="conversation-turn-user"]',
       '[data-testid="user-message"]',
+      '[data-testid="conversation-turn-user"]',
     ],
     modelSelectors: ["[data-model-name]", "[aria-label*='model' i]"],
   },
