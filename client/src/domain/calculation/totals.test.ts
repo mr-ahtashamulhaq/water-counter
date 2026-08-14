@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countedMessages, formatWaterMl, totalMilliliters } from "./totals";
+import { countedMessages, formatWaterLiters, totalMilliliters } from "./totals";
 import type { QueryRecord } from "../storage/records";
 
 const records: QueryRecord[] = [
@@ -45,9 +45,9 @@ describe("chat totals", () => {
     expect(countedMessages(records)).toBe(1);
   });
 
-  it("formats small values for a compact badge", () => {
-    expect(formatWaterMl(0.26)).toBe("0.26 mL");
-    expect(formatWaterMl(0.004)).toBe("4 µL");
-    expect(formatWaterMl(1200)).toBe("1.2 L");
+  it("formats all values in liters without rounding small estimates to zero", () => {
+    expect(formatWaterLiters(0.26)).toBe("0.00026 L");
+    expect(formatWaterLiters(0.004)).toBe("0.00000 L");
+    expect(formatWaterLiters(1200)).toBe("1.2 L");
   });
 });

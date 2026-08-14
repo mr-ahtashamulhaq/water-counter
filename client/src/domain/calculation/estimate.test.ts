@@ -30,11 +30,12 @@ describe("estimateQuery", () => {
     expect(estimate.confidence).toBe("provider-reported");
   });
 
-  it("does not reuse another provider factor for Claude", () => {
+  it("uses the ChatGPT proxy factor for Claude with a clear limitation", () => {
     const estimate = estimateQuery(query("claude"));
 
-    expect(estimate.status).toBe("unavailable");
-    expect(estimate.waterMl).toBeNull();
-    expect(estimate.confidence).toBe("unavailable");
+    expect(estimate.status).toBe("counted");
+    expect(estimate.waterMl).toBe(0.32);
+    expect(estimate.confidence).toBe("research-estimated");
+    expect(estimate.limitation).toContain("Claude-specific water data is not published");
   });
 });
