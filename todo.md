@@ -1,9 +1,11 @@
 # Current Tasks
 
-- [x] Create the public `water-counter` GitHub repository.
-- [x] Prepare the basic extension project structure.
-- [x] Add the first project files with small commits.
-- [x] Push the granular commit history to GitHub.
-- [x] Write the one-line, two-line, three-line, five-line, ten-line, half-page, and one-page descriptions.
-- [x] Review the descriptions for simple English.
-- [x] Report the repository URL and commit summary.
+- [x] Set the performance budget and animation rules.
+- [x] Inspect the current extension scaffold and select the build path.
+- [x] Build the Manifest V3 shell and shared runtime contracts.
+- [ ] Implement calculation, storage, and message accounting.
+- [ ] Implement provider adapters and safe page observation.
+- [ ] Build the injected UI, popup, and options surfaces.
+- [ ] Measure performance and run unit, fixture, and browser tests.
+- [ ] Commit every isolated change and push each coherent milestone.
+- [ ] Report the tested build and remaining limitations.
