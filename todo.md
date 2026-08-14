@@ -28,3 +28,7 @@
 - [x] Preserve the user’s README install section and update only the latest release ZIP link.
 - [x] Test new-chat, existing-chat, refresh, and route-change total behavior.
 - [x] Package and publish the chat-isolation correction.
+- [x] Treat ChatGPT’s root new-chat route as an empty chat until a conversation ID exists.
+- [x] Prevent stored root-route records from appearing in a new empty chat.
+- [x] Test new-chat root, root refresh, and existing conversation refresh behavior.
+- [x] Publish the root-route correction.
