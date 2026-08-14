@@ -21,7 +21,10 @@ if (provider !== "unknown") {
     if (nextConversationId !== conversationId) {
       conversationId = nextConversationId;
       sentQueryIds.clear();
+      surface.updateTotal(0, 0);
     }
+
+    const scanConversationId = conversationId;
 
     const pendingWrites = [];
     for (const { query, element } of findCompletedQueryNodes(provider)) {
@@ -35,7 +38,7 @@ if (provider !== "unknown") {
       pendingWrites.push(
         chrome.runtime.sendMessage({
           type: "water-counter.query-completed",
-          conversationId,
+          conversationId: scanConversationId,
           query,
           estimate,
         }),
@@ -48,10 +51,14 @@ if (provider !== "unknown") {
       chrome.runtime.sendMessage(
         {
           type: "water-counter.get-chat-total",
-          conversationId,
+          conversationId: scanConversationId,
         },
         (response: { totalMl?: number; messageCount?: number } | undefined) => {
-          if (response?.totalMl !== undefined && response.messageCount !== undefined) {
+          if (
+            conversationId === scanConversationId &&
+            response?.totalMl !== undefined &&
+            response.messageCount !== undefined
+          ) {
             surface.updateTotal(response.totalMl, response.messageCount);
           }
           resolve();
@@ -59,6 +66,32 @@ if (provider !== "unknown") {
       );
       });
   };
+
+  const handleRouteChange = () => {
+    const nextConversationId = detectConversationId(window.location, provider);
+    if (nextConversationId === conversationId) {
+      return;
+    }
+
+    conversationId = nextConversationId;
+    sentQueryIds.clear();
+    surface.updateTotal(0, 0);
+    scan();
+  };
+
+  const originalPushState = history.pushState.bind(history);
+  history.pushState = ((state: unknown, title: string, url?: string | URL | null) => {
+    const result = originalPushState(state, title, url);
+    handleRouteChange();
+    return result;
+  }) as typeof history.pushState;
+
+  const originalReplaceState = history.replaceState.bind(history);
+  history.replaceState = ((state: unknown, title: string, url?: string | URL | null) => {
+    const result = originalReplaceState(state, title, url);
+    handleRouteChange();
+    return result;
+  }) as typeof history.replaceState;
 
   const scan = () => {
     if (scanPromise) {
@@ -76,5 +109,8 @@ if (provider !== "unknown") {
   };
 
   scan();
+  window.addEventListener("popstate", handleRouteChange);
+  window.addEventListener("hashchange", handleRouteChange);
+  window.setInterval(handleRouteChange, 500);
   createObservationScheduler(scan).start();
 }
