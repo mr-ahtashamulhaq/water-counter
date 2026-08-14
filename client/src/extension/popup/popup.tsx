@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Popup from "./Popup";
+import PopupView from "./PopupView";
 
 const root = document.getElementById("root");
 
@@ -10,6 +10,6 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <Popup />
+    <PopupView />
   </StrictMode>,
 );
