@@ -32,3 +32,15 @@ The corrected bundle passed these Chromium checks:
 | Clear control | Popup changed to `0 µL` and zero counted responses. |
 
 The provider pages were not authenticated. The response checks used DOM fixtures that match each provider profile. The ChatGPT page also showed a provider sign-in console message. That message was not from Water Counter.
+
+## Revision results
+
+The previous zero or partial total was caused by concurrent `chrome.storage.local` read-modify-write operations. Four detected responses could overwrite one another, leaving one stored record. Storage mutations now run through a queue.
+
+The revised Chromium checks counted four ChatGPT fixtures as `0.0013 L`, three Gemini fixtures as `0.00078 L`, and three Claude fixtures as `0.00096 L`. Claude now uses the ChatGPT `0.32 mL` factor as a clearly labeled proxy because no Claude-specific public factor is available.
+
+The total control is now a compact top-right button. Its details are hidden until opened. A screenshot also exposed that fixed positioning must be applied to the host element outside the Shadow DOM; the host now receives inline fixed positioning and sits below provider header actions.
+
+The final Chromium screenshot shows the button at the top-right below ChatGPT’s header actions. It does not create a bottom strip or open a details panel by default. The visible example is `0.0013 L` for four ChatGPT responses.
+
+The web preview also renders the revised liters values and the Claude comparison copy. The generated icon was cleaned to a transparent Water Counter mark and rasterized into the 16, 32, 48, and 128 pixel extension assets plus the preview favicon.
