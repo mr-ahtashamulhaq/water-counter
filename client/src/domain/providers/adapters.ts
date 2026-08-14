@@ -22,6 +22,13 @@ export function detectConversationId(location: Location, provider: Provider): st
 }
 
 export function findCompletedQueries(provider: Provider, root: ParentNode = document): CompletedQuery[] {
+  return findCompletedQueryNodes(provider, root).map(({ query }) => query);
+}
+
+export function findCompletedQueryNodes(
+  provider: Provider,
+  root: ParentNode = document,
+): Array<{ query: CompletedQuery; element: Element }> {
   const profile = profileFor(provider);
   if (!profile) {
     return [];
@@ -38,7 +45,7 @@ export function findCompletedQueries(provider: Provider, root: ParentNode = docu
     }
 
     const user = findPreviousUser(assistant, profile.userSelectors);
-    return [toCompletedQuery(profile, assistant, user)];
+    return [{ query: toCompletedQuery(profile, assistant, user), element: assistant }];
   });
 }
 
