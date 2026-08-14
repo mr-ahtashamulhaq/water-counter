@@ -6,13 +6,15 @@ It shows an estimated water value for each completed response. It also shows the
 
 Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside the chat page. It does not add a separate dashboard.
 
-## Current release
 
-The current public release is **v0.1.2**.
+## Installation
 
-Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.2).
+**Chrome / Edge / Chromium**
 
-The release ZIP contains `manifest.json` at its root. It is ready for Chrome **Load unpacked** installation.
+1. Download [`claude-counter-0.4.2.zip`](https://github.com/mr-ahtashamulhaq/water-counter/releases/download/v0.1.2/water-counter-v0.1.2.zip)
+2. Go to `chrome://extensions` and enable **Developer mode**
+3. Drag and drop the zip onto the page
+
 
 ## Features
 
