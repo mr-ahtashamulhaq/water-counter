@@ -17,3 +17,9 @@
 - [x] Test ChatGPT, Gemini, Claude, popup, service worker, and local storage flows.
 - [x] Fix reproducible browser errors and add regression coverage.
 - [x] Build and publish a corrected release package.
+- [x] Move the injected chat total to a compact top-right expandable control.
+- [x] Use the ChatGPT factor for Claude and display estimates in liters.
+- [x] Repair historical conversation scanning and chat total persistence.
+- [x] Generate and wire the Water Counter extension icon and favicon.
+- [x] Test the revised UI and totals in Chromium across supported providers.
+- [x] Package and publish the revised release.
