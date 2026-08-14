@@ -10,8 +10,8 @@ if (!existsSync(manifestPath)) {
 }
 
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-if (manifest.version !== "0.1.3") {
-  throw new Error(`Expected extension version 0.1.3, found ${manifest.version}`);
+if (manifest.version !== "0.1.4") {
+  throw new Error(`Expected extension version 0.1.4, found ${manifest.version}`);
 }
 
 for (const requiredFile of ["service-worker-loader.js", "popup/popup.html", "options/options.html"]) {
