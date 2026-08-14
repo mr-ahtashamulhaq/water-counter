@@ -109,3 +109,6 @@ Use a compact mark built from one horizontal waterline crossing a small open dro
 - The extension must preserve the host chat's visual rhythm.
 - No purple AI gradients, emoji icons, fake testimonials, fake precision, or perpetual decorative animation.
 - Evidence, confidence, and privacy controls are first-class visual states.
+- The product demo must read as a host chat with a light extension layer, not as a standalone dashboard.
+- A thin river-teal waterline with a measurement tick must appear above the fold and connect totals to response badges.
+- Wordmarks and metadata use calibrated instrument cues: Space Grotesk for the wordmark and IBM Plex Mono for units, source age, and factor versions.
