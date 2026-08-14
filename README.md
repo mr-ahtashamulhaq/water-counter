@@ -20,7 +20,6 @@ The current public release is **v0.1.3**.
 
 Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.3).
 
-The release ZIP contains `manifest.json` at its root. It is ready for Chrome **Load unpacked** installation.
 
 ## Features
 
