@@ -1,5 +1,5 @@
-// Water Counter preview direction: operate-first, mineral blue signal, cool paper ground,
-// compact measurements, and no animation that changes layout or competes with the chat.
+// Measured Waterline: Swiss field-instrument utility, embedded host-chat rhythm,
+// calibrated metadata, and quiet transform/opacity motion only.
 
 import { useMemo, useState } from "react";
 import { Droplets, Gauge, ShieldCheck } from "lucide-react";
@@ -76,6 +76,7 @@ export default function Home() {
   const [showDetails, setShowDetails] = useState(false);
   const detail = providerDetails[provider];
   const providerMessages = useMemo(() => messages[provider], [provider]);
+  const waterlineWidth = detail.totalMl ? Math.min(92, Math.max(18, detail.totalMl * 46)) : 0;
 
   return (
     <main className="water-preview">
@@ -83,7 +84,8 @@ export default function Home() {
         <nav className="preview-nav" aria-label="Water Counter preview">
           <div className="preview-brand">
             <span className="preview-mark" aria-hidden="true">
-              <span>•</span>
+              <span className="mark-drop" />
+              <span className="mark-line" />
             </span>
             Water Counter
           </div>
@@ -128,14 +130,23 @@ export default function Home() {
           <div className="chat-main">
             <header className="chat-header">
               <div>
+                <p className="chat-kicker">Host chat · estimate layer</p>
                 <h2 className="chat-title">A conversation about AI impact</h2>
                 <p className="chat-model">{detail.model}</p>
               </div>
               <div className="chat-total" aria-live="polite">
                 <span className="chat-total-label">Chat total</span>
                 <strong className="chat-total-value">{detail.totalMl ? formatWaterMl(detail.totalMl) : "Unavailable"}</strong>
+                <span className="chat-total-meta">{detail.totalMl ? "operational · local" : "no current factor"}</span>
               </div>
             </header>
+
+            <div className="waterline" aria-label="Measured waterline for this conversation">
+              <span className="waterline-track" />
+              <span className="waterline-fill" style={{ width: `${waterlineWidth}%` }} />
+              <span className="waterline-tick" style={{ left: `${waterlineWidth}%` }} />
+              <span className="waterline-label">0 mL <span>waterline</span> {detail.totalMl ? formatWaterMl(detail.totalMl) : "—"}</span>
+            </div>
 
             <div className="message-list">
               {providerMessages.map((message, index) => (
@@ -158,8 +169,10 @@ export default function Home() {
                       <span className="estimate-note">{message.note}</span>
                     </div>
                     {showDetails && index === 0 ? (
-                      <div className="estimate-note" role="status">
-                        {detail.factor}. Water Counter shows operational water estimates only.
+                      <div className="source-seam" role="status">
+                        <span className="source-seam-label">Source seam</span>
+                        <span>{detail.factor}. Water Counter shows operational water estimates only.</span>
+                        <code>{detail.totalMl ? "factor v1" : "factor v0"}</code>
                       </div>
                     ) : null}
                   </div>
