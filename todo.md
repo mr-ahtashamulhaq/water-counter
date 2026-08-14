@@ -3,7 +3,7 @@
 - [x] Set the performance budget and animation rules.
 - [x] Inspect the current extension scaffold and select the build path.
 - [x] Build the Manifest V3 shell and shared runtime contracts.
-- [ ] Implement calculation, storage, and message accounting.
+- [x] Implement calculation, storage, and message accounting.
 - [ ] Implement provider adapters and safe page observation.
 - [ ] Build the injected UI, popup, and options surfaces.
 - [ ] Measure performance and run unit, fixture, and browser tests.
