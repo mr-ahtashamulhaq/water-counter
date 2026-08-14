@@ -88,3 +88,22 @@ The first shortlist balances memorability, friendly tone, suggestive relevance, 
 The strongest brand candidates are **Rippla**, **Aquora**, **Quiet Drop**, and **Cloud Sip**. Rippla is the best fit if the product stays friendly, curious, and visually expressive. Aquora is the best fit if the brand may grow into a broader environmental utility. Quiet Drop is the clearest behavioral promise. Cloud Sip is the most immediately charming for everyday AI users.
 
 Domain availability and trademark status are not assumed from this document. They must be checked before a final name is selected.
+
+## Domain check results
+
+The Brand Alchemy DNS and RDAP checker was run on 2026-08-14. “Available” means no active DNS record was found and the RDAP lookup returned 404. It is not a purchase guarantee, trademark clearance, or proof that a name is legally safe.
+
+| Candidate | `.com` | `.ai` | `.app` | `.io` | `.tech` |
+| --- | --- | --- | --- | --- | --- |
+| Rippla | Taken | Taken | Available | Available | Available |
+| Aquora | Taken | Taken | Taken | Taken | Taken |
+| Flowlet | Taken | Taken | Taken | Available | Available |
+| Dewly | Taken | Taken | Taken | Available | Available |
+| Quiet Drop | Taken | Available | Available | Available | Available |
+| Cloud Sip | Taken | Available | Taken | Available | Available |
+| Ripple Count | Available | Available | Available | Available | Available |
+| Drop Signal | Taken | Taken | Taken | Available | Available |
+
+The strongest availability and brand-fit combination is currently **Ripple Count**, with all five checked domains showing available signals. **Quiet Drop** and **Cloud Sip** are strong friendly alternatives with `.ai`, `.app`, and `.io` availability signals. **Rippla** remains the most memorable one-word candidate, but its `.com` and `.ai` domains are taken. **Aquora** is not recommended for launch because all checked domains are taken.
+
+Before final selection, check trademark databases, browser-store name conflicts, social handles, pronunciation in the target markets, and whether the domain is actually purchasable through a registrar. Do not publish or purchase a domain until the name is approved.
