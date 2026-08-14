@@ -15,6 +15,10 @@ export type RuntimeMessage =
       conversationId: string;
     }
   | {
+      type: "water-counter.clear-conversation";
+      conversationId: string;
+    }
+  | {
       type: "water-counter.pause";
       paused: boolean;
     }
