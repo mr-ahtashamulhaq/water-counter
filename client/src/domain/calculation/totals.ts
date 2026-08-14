@@ -12,14 +12,20 @@ export function countedMessages(queries: QueryRecord[]): number {
   }, 0);
 }
 
-export function formatWaterMl(valueMl: number): string {
-  if (valueMl < 0.01) {
-    return `${Math.round(valueMl * 1000)} µL`;
+export function formatWaterLiters(valueMl: number): string {
+  const liters = valueMl / 1000;
+
+  if (liters === 0) {
+    return "0 L";
   }
 
-  if (valueMl < 1000) {
-    return `${Number(valueMl.toFixed(2))} mL`;
+  if (liters < 0.001) {
+    return `${liters.toFixed(5)} L`;
   }
 
-  return `${Number((valueMl / 1000).toFixed(2))} L`;
+  if (liters < 0.01) {
+    return `${liters.toFixed(4)} L`;
+  }
+
+  return `${Number(liters.toFixed(3))} L`;
 }
