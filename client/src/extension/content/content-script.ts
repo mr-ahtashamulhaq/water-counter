@@ -16,6 +16,16 @@ if (provider !== "unknown") {
   let scanPromise: Promise<void> | null = null;
   let scanRequested = false;
 
+  const isNewChatRoute = () => provider === "chatgpt" && window.location.pathname === "/";
+
+  const clearConversation = (id: string): Promise<void> =>
+    new Promise((resolve) => {
+      chrome.runtime.sendMessage(
+        { type: "water-counter.clear-conversation", conversationId: id },
+        () => resolve(),
+      );
+    });
+
   const runScan = async (): Promise<void> => {
     const nextConversationId = detectConversationId(window.location, provider);
     if (nextConversationId !== conversationId) {
@@ -26,8 +36,15 @@ if (provider !== "unknown") {
 
     const scanConversationId = conversationId;
 
+    const completedQueries = findCompletedQueryNodes(provider);
+    if (isNewChatRoute() && completedQueries.length === 0) {
+      surface.updateTotal(0, 0);
+      await clearConversation(scanConversationId);
+      return;
+    }
+
     const pendingWrites = [];
-    for (const { query, element } of findCompletedQueryNodes(provider)) {
+    for (const { query, element } of completedQueries) {
       if (sentQueryIds.has(query.id)) {
         continue;
       }
