@@ -1,0 +1,184 @@
+/* Water Counter options: clear reading flow, explicit controls, and no decorative motion. */
+
+:root {
+  color-scheme: light;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #17202b;
+  background: #f5faf8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: #f5faf8;
+}
+
+.options {
+  width: min(720px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 56px 0 72px;
+}
+
+.options-head {
+  max-width: 570px;
+}
+
+.options-mark {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 10px 10px 10px 3px;
+  background: #bfe9e6;
+  color: #175263;
+  font-size: 13px;
+  font-weight: 800;
+  transform: rotate(-45deg);
+}
+
+.options-mark span {
+  transform: rotate(45deg);
+}
+
+h1 {
+  margin: 18px 0 0;
+  color: #17202b;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.lede {
+  margin: 14px 0 0;
+  color: #52646c;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.settings-list {
+  display: grid;
+  gap: 12px;
+  margin: 36px 0 0;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 20px;
+  border: 1px solid #dce9e6;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.setting-title {
+  margin: 0;
+  color: #17202b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.setting-copy {
+  max-width: 480px;
+  margin: 6px 0 0;
+  color: #657680;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.switch {
+  flex: 0 0 auto;
+  position: relative;
+  width: 42px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #b9c6c9;
+  cursor: pointer;
+  transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.switch::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  content: "";
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.switch.on {
+  background: #3e9b87;
+}
+
+.switch.on::after {
+  transform: translateX(18px);
+}
+
+.switch:focus-visible,
+.link-button:focus-visible,
+.danger-button:focus-visible {
+  outline: 3px solid rgba(36, 125, 150, 0.3);
+  outline-offset: 3px;
+}
+
+.source-block {
+  margin-top: 36px;
+}
+
+.source-block h2 {
+  margin: 0;
+  color: #17202b;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+
+.source-block p {
+  margin: 8px 0 0;
+  color: #657680;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.source-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #17627a;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.danger-button,
+.link-button {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.danger-button {
+  color: #9b4b4b;
+}
+
+.link-button {
+  color: #17627a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}
