@@ -1,7 +1,7 @@
 const manifest = {
   manifest_version: 3,
   name: "Water Counter",
-  version: "0.1.0",
+  version: "0.1.1",
   description: "See estimated water use in AI chats.",
   permissions: ["storage"],
   host_permissions: [
