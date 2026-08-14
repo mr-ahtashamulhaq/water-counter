@@ -5,7 +5,7 @@
 - [x] Build the Manifest V3 shell and shared runtime contracts.
 - [x] Implement calculation, storage, and message accounting.
 - [x] Implement provider adapters and safe page observation.
-- [ ] Build the injected UI, popup, and options surfaces.
+- [x] Build the injected UI, popup, and options surfaces.
 - [ ] Measure performance and run unit, fixture, and browser tests.
 - [ ] Commit every isolated change and push each coherent milestone.
 - [ ] Report the tested build and remaining limitations.
