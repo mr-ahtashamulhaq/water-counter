@@ -1,4 +1,6 @@
-# Water Counter
+# **Water Counter**
+
+![Extension](image.png)
 
 Water Counter is a privacy-first Chrome extension for AI chats.
 
@@ -6,7 +8,7 @@ It shows an estimated water value for each completed response. It also shows the
 
 Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside the chat page. It does not add a separate dashboard.
 
-## Installation
+## **Installation**
 
 **Chrome / Edge / Chromium**
 
@@ -14,14 +16,14 @@ Water Counter supports ChatGPT, Gemini, and Claude. The extension works inside t
 2. Go to `chrome://extensions` and enable **Developer mode**
 3. Drag and drop the ZIP onto the page
 
-## Current release
+## **Current release**
 
 The current public release is **v0.1.4**.
 
 Download it from the [Water Counter releases page](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.4).
 
 
-## Features
+## **Features**
 
 | Feature | Description |
 | --- | --- |
@@ -34,7 +36,7 @@ Download it from the [Water Counter releases page](https://github.com/mr-ahtasha
 | Low-motion UI | Uses small state changes. It does not update the estimate while a response is streaming. |
 | Extension branding | Includes a Water Counter icon and a preview favicon. |
 
-## Calculation model
+## **Calculation model**
 
 Water Counter uses one fixed factor for each supported provider.
 
@@ -65,7 +67,7 @@ The extension rounds the displayed value for compact output. These values are es
 
 There is no reliable word-per-litre value in this release. The public factors are averages or medians. They are not token-scaled measurements.
 
-## Privacy
+## **Privacy**
 
 Water Counter calculates estimates in the browser.
 
@@ -75,17 +77,6 @@ The extension does not save chat text by default. It does not need a server for 
 
 The extension uses the minimum permission needed for local storage and the three supported chat sites.
 
-## Install in Chrome
-
-Chrome does not install a ZIP file automatically. Use the following steps:
-
-1. Download `water-counter-v0.1.4.zip` from the [v0.1.4 release](https://github.com/mr-ahtashamulhaq/water-counter/releases/tag/v0.1.4).
-2. Extract the ZIP file to a permanent folder.
-3. Open `chrome://extensions` in Chrome.
-4. Turn on **Developer mode**.
-5. Select **Load unpacked**.
-6. Select the extracted folder that contains `manifest.json`.
-7. Open a supported chat site in a new tab.
 
 | Site | URL |
 | --- | --- |
@@ -101,8 +92,7 @@ Pin Water Counter from Chrome's extensions menu if you want quick access to the 
 2. Extract it to a new folder.
 3. Open `chrome://extensions`.
 4. Select **Remove** for the old Water Counter entry.
-5. Select **Load unpacked**.
-6. Select the new folder that contains `manifest.json`.
+5. Upload the new zip file again
 
 The unpacked install method does not provide automatic updates. Users must repeat these steps for each new release.
 
