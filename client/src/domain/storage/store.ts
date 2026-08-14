@@ -2,6 +2,16 @@ import type { QueryRecord, WaterCounterStore } from "./records";
 import { EMPTY_STORE } from "./records";
 
 const STORE_KEY = "water-counter.store";
+let mutationQueue: Promise<unknown> = Promise.resolve();
+
+function enqueueMutation<T>(operation: () => Promise<T>): Promise<T> {
+  const next = mutationQueue.then(operation, operation);
+  mutationQueue = next.then(
+    () => undefined,
+    () => undefined,
+  );
+  return next;
+}
 
 function cloneStore(store: WaterCounterStore): WaterCounterStore {
   return structuredClone(store);
@@ -25,53 +35,59 @@ export async function writeStore(store: WaterCounterStore): Promise<void> {
 }
 
 export async function saveQuery(record: QueryRecord): Promise<WaterCounterStore> {
-  const store = await readStore();
+  return enqueueMutation(async () => {
+    const store = await readStore();
 
-  if (store.paused || record.estimate.status !== "counted") {
-    return store;
-  }
+    if (store.paused || record.estimate.status !== "counted") {
+      return store;
+    }
 
-  const conversation = store.conversations[record.conversationId] ?? {
-    conversationId: record.conversationId,
-    provider: record.provider,
-    updatedAt: record.createdAt,
-    queries: [],
-  };
+    const conversation = store.conversations[record.conversationId] ?? {
+      conversationId: record.conversationId,
+      provider: record.provider,
+      updatedAt: record.createdAt,
+      queries: [],
+    };
 
-  const nextQueries = conversation.queries.filter((query) => query.id !== record.id);
-  nextQueries.push(record);
+    const nextQueries = conversation.queries.filter((query) => query.id !== record.id);
+    nextQueries.push(record);
 
-  const nextStore: WaterCounterStore = {
-    ...store,
-    conversations: {
-      ...store.conversations,
-      [record.conversationId]: {
-        ...conversation,
-        updatedAt: record.createdAt,
-        queries: nextQueries,
+    const nextStore: WaterCounterStore = {
+      ...store,
+      conversations: {
+        ...store.conversations,
+        [record.conversationId]: {
+          ...conversation,
+          updatedAt: record.createdAt,
+          queries: nextQueries,
+        },
       },
-    },
-  };
+    };
 
-  await writeStore(nextStore);
-  return nextStore;
+    await writeStore(nextStore);
+    return nextStore;
+  });
 }
 
 export async function setPaused(paused: boolean): Promise<WaterCounterStore> {
-  const store = await readStore();
-  const nextStore = { ...store, paused };
-  await writeStore(nextStore);
-  return nextStore;
+  return enqueueMutation(async () => {
+    const store = await readStore();
+    const nextStore = { ...store, paused };
+    await writeStore(nextStore);
+    return nextStore;
+  });
 }
 
 export async function clearConversation(conversationId: string): Promise<WaterCounterStore> {
-  const store = await readStore();
-  const { [conversationId]: _removed, ...conversations } = store.conversations;
-  const nextStore = { ...store, conversations };
-  await writeStore(nextStore);
-  return nextStore;
+  return enqueueMutation(async () => {
+    const store = await readStore();
+    const { [conversationId]: _removed, ...conversations } = store.conversations;
+    const nextStore = { ...store, conversations };
+    await writeStore(nextStore);
+    return nextStore;
+  });
 }
 
 export async function clearAll(): Promise<void> {
-  await writeStore(cloneStore(EMPTY_STORE));
+  await enqueueMutation(() => writeStore(cloneStore(EMPTY_STORE)));
 }
