@@ -16,6 +16,9 @@ export type RuntimeMessage =
   | {
       type: "water-counter.pause";
       paused: boolean;
+    }
+  | {
+      type: "water-counter.clear-all";
     };
 
 export interface ChatTotalResponse {
